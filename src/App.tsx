@@ -228,4 +228,88 @@ function App() {
             </button>
           </div>
 
+          <div className={`bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-6 shadow-lg transition-colors ${activeTab === 'history' ? 'block' : 'hidden'}`}>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Scan History</h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead>
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Target</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Result</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {scanHistory.map((item, index) => (
+                    <tr key={index}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{item.date}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{item.type}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{item.target}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <span className={`px-2 py-1 rounded-full ${
+                          item.result.includes('Safe') ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+                        }`}>
+                          {item.result}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
+          {scanResult && (
+            <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-6 shadow-lg transition-colors">
+              <div className="flex items-start space-x-4">
+                {scanResult.isSafe ? (
+                  <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0" />
+                ) : (
+                  <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0" />
+                )}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    {scanResult.isSafe ? 'Safe to proceed' : `Suspicious (${scanResult.risk} risk)`}
+                  </h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    {scanResult.reasons && scanResult.reasons.map((reason, index) => (
+                      <li key={index} className="text-sm text-gray-700 dark:text-gray-300">
+                        {reason}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <button
+          onClick={() => setShowSafetyPrecautions(!showSafetyPrecautions)}
+          className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Safety Precautions
+        </button>
+
+        {showSafetyPrecautions && (
+          <div className="mt-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-6 shadow-lg transition-colors">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Stay Safe from Phishing Attacks</h3>
+            <ul className="list-disc pl-6 space-y-2 text-gray-900 dark:text-white">
+              <li>Verify the sender's email address and domain.</li>
+              <li>Look for suspicious URLs and links.</li>
+              <li>Check for SSL certificates (https).</li>
+              <li>Never share personal information unless you are certain of the website's legitimacy.</li>
+              <li>Be wary of urgent or threatening emails.</li>
+              <li>Keep your software updated.</li>
+              <li>Use strong passwords.</li>
+              <li>Enable two-factor authentication.</li>
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;
