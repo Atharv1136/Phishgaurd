@@ -160,4 +160,72 @@ function App() {
                 : 'text-white hover:bg-white/10'
             }`}
           >
+            <Mail className="w-5 h-5" />
+            <span>Email Scanner</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+              activeTab === 'history'
+                ? 'bg-blue-600 text-white'
+                : 'text-white hover:bg-white/10'
+            }`}
+          >
+            <History className="w-5 h-5" />
+            <span>History</span>
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <div className={`bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-6 shadow-lg transition-colors ${activeTab === 'url' ? 'block' : 'hidden'}`}>
+            <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">Enter URL to scan</label>
+            <div className="flex space-x-2">
+              <input
+                type="text"
+                value={urlInput}
+                onChange={(e) => setUrlInput(e.target.value)}
+                placeholder="https://example.com"
+                className="flex-1 px-4 py-2 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button 
+                onClick={handleUrlScan}
+                disabled={isScanning}
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isScanning ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Scanning...
+                  </span>
+                ) : 'Scan'}
+              </button>
+              <button
+                onClick={handleReport}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center space-x-2"
+              >
+                <Flag className="w-4 h-4" />
+                <span>Report</span>
+              </button>
+            </div>
+          </div>
+
+          <div className={`bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-6 shadow-lg transition-colors ${activeTab === 'email' ? 'block' : 'hidden'}`}>
+            <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">Email Headers Analysis</label>
+            <textarea
+              value={emailInput}
+              onChange={(e) => setEmailInput(e.target.value)}
+              placeholder="Paste email headers here..."
+              className="w-full h-32 px-4 py-2 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+            />
+            <button 
+              onClick={handleEmailScan}
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Scan Email
+            </button>
+          </div>
+
 
